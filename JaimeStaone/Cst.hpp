@@ -14,4 +14,8 @@ namespace Cst {
 	extern const std::string BULLET;
 
 	extern const sf::Time FIRE_COOLDOWN;
+
+	extern const std::string LEVEL_FILENAME;
+	extern const std::string CSV_SEPARATOR;
+
 }

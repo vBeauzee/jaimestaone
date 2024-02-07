@@ -13,8 +13,7 @@ namespace Cst {
     const std::string BULLET = "bullet";
 
     const sf::Time FIRE_COOLDOWN = sf::seconds(0.1);
-}
 
-namespace Globals {
-    std::vector<Entity*> enemies;
+    const std::string LEVEL_FILENAME="../data/level.csv";
+    const std::string CSV_SEPARATOR = ";";
 }

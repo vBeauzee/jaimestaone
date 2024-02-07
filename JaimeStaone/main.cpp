@@ -3,21 +3,14 @@
 #include "Bullet.hpp"
 #include "Cst.hpp"
 #include <vector>
+#include "LevelFileReader.hpp"
+
 
 
 void fire(sf::Vector2f startPosition) {
     Bullet* bullet = BulletPool::INSTANCE->get();
     bullet->setCoordinates(startPosition);
     bullet->setSprite("../art/bullet.png");
-}
-
-void initEnemies(int size) {
-    for (int i = 0; i < size; ++i) {
-        auto enemy = EnemiesPool::INSTANCE->get();
-        enemy->radius = 45;
-        enemy->setCoordinates(i * Cst::WINDOW_WIDTH / size, 0);
-        enemy->setSprite("../art/ufo.png");
-    }
 }
 
 int main() {
@@ -29,7 +22,9 @@ int main() {
     BulletPool::INSTANCE = &bulletPool;
     EnemiesPool enemiesPool(10);
     EnemiesPool::INSTANCE = &enemiesPool;
-    initEnemies(5);
+   
+    LevelFileReader levelInit;
+    levelInit.readFile();
 
     sf::Clock clock;
 
@@ -65,9 +60,9 @@ int main() {
 
         window.clear();
         player.update();
-        if (EnemiesPool::INSTANCE->enemiesToRender.empty()) {
-            initEnemies(5);
-        }
+        //if (EnemiesPool::INSTANCE->enemiesToRender.empty()) {
+        //    initEnemies(5);
+        //}
         window.draw(player.sprite);
         for (auto bullet : bulletPool.getBulletsToRender())
         {

@@ -28,7 +28,7 @@ void Entity::setCoordinates(float x, float y) {
 void Entity::setSprite(std::string path) {
     if (!texture.loadFromFile(path))
     {
-        printf("Error loading png file.");
+        printf("Error loading png file: %s", path);
     }
     sprite.setTexture(texture);
     textureSize = texture.getSize();
@@ -46,7 +46,6 @@ void Entity::update() {
     yy = clamp( (cy + yr) * Cst::GAME_GRID, textureSize.y / 2, Cst::WINDOW_HEIGHT - textureSize.y/2);
         
     sprite.setPosition(xx - textureSize.x/2, yy - textureSize.y / 2);
-    //printf("Sprite %d has position %d:%d\n", id, xx, yy);
     dx = 0;
     dy = 0;
 }

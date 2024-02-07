@@ -26,6 +26,10 @@ public:
 	float dx;
 	float dy;
 
+	// target destination
+	float tx;
+	float ty;
+
 	// Check overlaps
 	float radius;
 
