@@ -7,6 +7,8 @@
 class Entity {
 public:
 
+	std::string name;
+
 	// Graphical object
 	sf::Texture texture;
 	sf::Sprite sprite;

@@ -63,9 +63,7 @@ void Entity::update() {
         xx = clamp(xx, textureSize.x / 2, Cst::WINDOW_WIDTH - textureSize.x / 2);
         yy = clamp(yy, textureSize.y / 2, Cst::WINDOW_HEIGHT - textureSize.y / 2);
     }
-
-
-        
+            
     sprite.setPosition(xx, yy );
     if (isEnemy) {
         sprite.rotate(0.01);
