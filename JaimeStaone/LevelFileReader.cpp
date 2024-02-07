@@ -44,7 +44,9 @@ void LevelFileReader::initEnemies(std::string* enemyData) {
     auto enemy = EnemiesPool::INSTANCE->get();
     enemy->radius = 45;
     enemy->setSprite("../art/ufo_" + enemyData[0] + ".png");
-    enemy->setCoordinates(std::stof(enemyData[1]), std::stof(enemyData[2]));
-    enemy->tx = (std::stof(enemyData[3]));
-    enemy->ty = (std::stof(enemyData[4]));
+    enemy->originPosition = sf::Vector2f(std::stof(enemyData[1]), std::stof(enemyData[2]));
+    enemy->setCoordinates(enemy->originPosition.x, enemy->originPosition.y);
+    enemy->targetPosition = sf::Vector2f(std::stof(enemyData[3]), std::stof(enemyData[4]));
+    enemy->isEnemy = true;
+    enemy->speed = 0.0005;
 }

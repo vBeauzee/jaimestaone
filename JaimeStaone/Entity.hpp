@@ -25,15 +25,16 @@ public:
 	// Movements
 	float dx;
 	float dy;
+	float speed;
 
 	// target destination
-	float tx;
-	float ty;
+	sf::Vector2f originPosition;
+	sf::Vector2f targetPosition;
 
 	// Check overlaps
 	float radius;
 
-	bool kill;
+	bool isEnemy;
 
 	Entity();
 

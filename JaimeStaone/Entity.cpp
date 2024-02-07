@@ -32,9 +32,23 @@ void Entity::setSprite(std::string path) {
     }
     sprite.setTexture(texture);
     textureSize = texture.getSize();
+    sprite.setOrigin(textureSize.x / 2, textureSize.y/2);
 }
 
 void Entity::update() {
+    if (isEnemy) {
+        sf::Vector2f direction = targetPosition - sf::Vector2f(xx, yy);
+        float factor = sqrt((direction.x * direction.x) + (direction.y * direction.y));
+        // Arrived at destination, going back;
+        if (factor < Cst::THRESHOLD_FLOAT) {
+            auto tmpVector = targetPosition;
+            targetPosition = originPosition;
+            originPosition = tmpVector;
+        }
+        direction /= factor;
+        dx += direction.x * speed;
+        dy += direction.y * speed;
+    }
     xr += dx;
     while (xr > 1) { xr--; cx++;}
     while (xr < 0) { xr++; cx--;}
@@ -42,10 +56,20 @@ void Entity::update() {
     while (yr > 1) { yr--; cy++; }
     while (yr < 0) { yr++; cy--; }
     
-    xx = clamp( (cx + xr) * Cst::GAME_GRID, textureSize.x / 2, Cst::WINDOW_WIDTH - textureSize.x/2);
-    yy = clamp( (cy + yr) * Cst::GAME_GRID, textureSize.y / 2, Cst::WINDOW_HEIGHT - textureSize.y/2);
+    xx = (cx + xr) * Cst::GAME_GRID;
+    yy = (cy + yr) * Cst::GAME_GRID;
+    // Enemy can exist offscreen.
+    if (!isEnemy) {
+        xx = clamp(xx, textureSize.x / 2, Cst::WINDOW_WIDTH - textureSize.x / 2);
+        yy = clamp(yy, textureSize.y / 2, Cst::WINDOW_HEIGHT - textureSize.y / 2);
+    }
+
+
         
-    sprite.setPosition(xx - textureSize.x/2, yy - textureSize.y / 2);
+    sprite.setPosition(xx, yy );
+    if (isEnemy) {
+        sprite.rotate(0.01);
+    }
     dx = 0;
     dy = 0;
 }

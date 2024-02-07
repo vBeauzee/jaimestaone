@@ -16,4 +16,6 @@ namespace Cst {
 
     const std::string LEVEL_FILENAME="../data/level.csv";
     const std::string CSV_SEPARATOR = ";";
+
+    const float THRESHOLD_FLOAT = 0.02;
 }

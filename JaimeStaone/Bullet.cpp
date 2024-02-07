@@ -79,7 +79,6 @@ void Bullet::checkCollisions() {
                 auto dist = sqrt((enemy->xx - xx) * (enemy->xx - xx) + (enemy->yy - yy) * (enemy->yy - yy));
                 if (dist <= radius + enemy->radius) {
                     printf("Enemy kill!\n");
-                    enemy->kill = true;
                     EnemiesPool::INSTANCE->recycle(enemy);
                 }
             }

@@ -18,4 +18,6 @@ namespace Cst {
 	extern const std::string LEVEL_FILENAME;
 	extern const std::string CSV_SEPARATOR;
 
+	extern const float THRESHOLD_FLOAT;
+
 }

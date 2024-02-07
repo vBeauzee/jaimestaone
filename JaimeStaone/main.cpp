@@ -17,6 +17,7 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(Cst::WINDOW_WIDTH, Cst::WINDOW_HEIGHT), "JaimeStaone!");
 
     Entity player("../art/player.png", Cst::WINDOW_WIDTH / 2, Cst::WINDOW_HEIGHT);
+    player.speed = 0.001;
 
     BulletPool bulletPool(10);
     BulletPool::INSTANCE = &bulletPool;
@@ -36,19 +37,19 @@ int main() {
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         {
-            player.dx = -0.001;
+            player.dx = -player.speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
-            player.dx = 0.001;
+            player.dx = player.speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
-            player.dy = -0.001;
+            player.dy = -player.speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
-            player.dy = 0.001;
+            player.dy = player.speed;
         }
         sf::Time elapsedTime = clock.getElapsedTime();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && elapsedTime > Cst::FIRE_COOLDOWN)
@@ -60,9 +61,6 @@ int main() {
 
         window.clear();
         player.update();
-        //if (EnemiesPool::INSTANCE->enemiesToRender.empty()) {
-        //    initEnemies(5);
-        //}
         window.draw(player.sprite);
         for (auto bullet : bulletPool.getBulletsToRender())
         {
