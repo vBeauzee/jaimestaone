@@ -57,7 +57,11 @@ int main() {
 
     sf::Clock fireCooldownClock;
     sf::Clock imguiClock;
-
+    float backgroundColor[3] = {
+        (float)31 / 255,
+        (float)0 / 255,
+        (float)44 / 255
+    };
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -65,6 +69,8 @@ int main() {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
+
+
         ImGui::SFML::Update(window, imguiClock.restart());
         
         ImGui::Begin("Inspector");
@@ -85,12 +91,13 @@ int main() {
             if (ImGui::Button(("Kill " + enemy->name).c_str()))                            // Buttons return true when clicked (most widgets return true when edited/activated)
                 EnemiesPool::INSTANCE->recycle(enemy);
         }
-
-
+        ImGui::SeparatorText("Background color");
+        ImGui::ColorEdit3("", backgroundColor);
         ImGui::End();
 
+
         manageInput(player, fireCooldownClock);
-        window.clear();
+        window.clear(sf::Color((int)(backgroundColor[0]*255), (int)(backgroundColor[1]*255), (int)(backgroundColor[2]*255)));
         player.update();
         window.draw(player.sprite);
         for (auto bullet : bulletPool.getBulletsToRender())
