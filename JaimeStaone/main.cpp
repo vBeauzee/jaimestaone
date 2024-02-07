@@ -74,7 +74,7 @@ int main() {
         ImGui::SFML::Update(window, imguiClock.restart());
         
         ImGui::Begin("Inspector");
-        ImGui::Text("Framerate: %.1d FPS", ImGui::GetIO().Framerate);
+        ImGui::Text("Framerate: %.1f FPS", ImGui::GetIO().Framerate);
         if (ImGui::TreeNode("Enemies")) {
             ImGui::Text("Rendered: %d", EnemiesPool::INSTANCE->enemiesToRender.size());
             ImGui::Text("In pool: %d", EnemiesPool::INSTANCE->enemies.size());
