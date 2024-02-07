@@ -1,18 +1,37 @@
 #include <SFML/Graphics.hpp>
 #include "Entity.hpp"
+#include "Bullet.hpp"
 #include "Cst.hpp"
 #include <vector>
+
+
+void fire(sf::Vector2f startPosition) {
+    Bullet* bullet = BulletPool::INSTANCE->get();
+    bullet->setCoordinates(startPosition);
+    bullet->setSprite("../art/bullet.png");
+}
+
+void initEnemies(int size) {
+    for (int i = 0; i < size; ++i) {
+        auto enemy = EnemiesPool::INSTANCE->get();
+        enemy->radius = 45;
+        enemy->setCoordinates(i * Cst::WINDOW_WIDTH / size, 0);
+        enemy->setSprite("../art/ufo.png");
+    }
+}
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(Cst::WINDOW_WIDTH, Cst::WINDOW_HEIGHT), "JaimeStaone!");
 
-    Entity player(Cst::PLAYER, Cst::WINDOW_WIDTH / 2, Cst::WINDOW_HEIGHT);
-    player.setSprite("../art/player.png");
+    Entity player("../art/player.png", Cst::WINDOW_WIDTH / 2, Cst::WINDOW_HEIGHT);
 
-    Entity ufo(Cst::UFO, Cst::WINDOW_WIDTH / 2, 0);
-    ufo.setSprite("../art/ufo.png");
+    BulletPool bulletPool(10);
+    BulletPool::INSTANCE = &bulletPool;
+    EnemiesPool enemiesPool(10);
+    EnemiesPool::INSTANCE = &enemiesPool;
+    initEnemies(5);
 
-    std::vector<Entity> bullets(0);
+    sf::Clock clock;
 
     while (window.isOpen()) {
         sf::Event event;
@@ -20,7 +39,6 @@ int main() {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         {
             player.dx = -0.001;
@@ -37,24 +55,36 @@ int main() {
         {
             player.dy = 0.001;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        sf::Time elapsedTime = clock.getElapsedTime();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && elapsedTime > Cst::FIRE_COOLDOWN)
         {
-            Entity bullet(Cst::BULLET, player.xx, player.yy);
-            bullet.setSprite("../art/bullet.png");
-            bullets.push_back(bullet);
+            fire(player.getFirePositionLeft());
+            fire(player.getFirePositionRight());
+            clock.restart();
         }
 
         window.clear();
         player.update();
-        for (int i = 0; i < bullets.size(); i++)
-        {
-            bullets[i].update();
-            window.draw(bullets[i].sprite);
+        if (EnemiesPool::INSTANCE->enemiesToRender.empty()) {
+            initEnemies(5);
         }
         window.draw(player.sprite);
-        window.draw(ufo.sprite);
-
+        for (auto bullet : bulletPool.getBulletsToRender())
+        {
+            bullet->update();
+            window.draw(bullet->sprite);
+        }
+        for (auto enemy : EnemiesPool::INSTANCE->enemiesToRender)
+        {
+            if (enemy != nullptr) {
+                enemy->update();
+                window.draw(enemy->sprite);           
+            }
+        }       
         window.display();
+
+        //check pool size
+        //printf(" pool : available %d | rendered %d\n", BulletPool::INSTANCE->bullets.size(), BulletPool::INSTANCE->bulletsToRender.size());
     }
 
     return 0;

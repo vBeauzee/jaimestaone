@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <SFML/Graphics.hpp>
+#include "Bullet.hpp"
 
 namespace Cst {
 	extern const int WINDOW_WIDTH;
@@ -10,4 +12,6 @@ namespace Cst {
 	extern const std::string PLAYER;
 	extern const std::string UFO;
 	extern const std::string BULLET;
+
+	extern const sf::Time FIRE_COOLDOWN;
 }

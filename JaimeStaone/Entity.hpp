@@ -6,11 +6,11 @@
 
 class Entity {
 public:
-	std::string id;
 
 	// Graphical object
 	sf::Texture texture;
 	sf::Sprite sprite;
+	sf::Vector2u textureSize;
 
 	// Base coordinates
 	int cx;
@@ -26,13 +26,16 @@ public:
 	float dx;
 	float dy;
 
-	float speed;
+	// Check overlaps
+	float radius;
+
+	bool kill;
 
 	Entity();
 
-	Entity(std::string name, float x, float y);
+	Entity(std::string path, float x, float y);
 
-	void update();
+	virtual void update();
 
 	void hascollision(int cx, int cy);
 
@@ -41,5 +44,26 @@ public:
 	void setSprite(std::string path);
 
 	float clamp(float valeur, float min, float max);
+
+	sf::Vector2f getFirePositionLeft();
+	sf::Vector2f getFirePositionRight();
+
+	bool isOffScreen();
+
+};
+
+class EnemiesPool {
+public:
+	EnemiesPool(int size);
+	~EnemiesPool();
+	static EnemiesPool* INSTANCE;
+
+	std::vector<Entity*> enemies;
+	std::vector<Entity*> enemiesToRender; // Vecteur contenant tous les enemies actuellement utilisées
+
+
+	Entity* get();
+	void recycle(Entity* enemy);
+	std::vector<Entity*> getEntitiesToRender();
 
 };
